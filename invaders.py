@@ -1,7 +1,7 @@
 import os
 
 import numpy as np
-from pyglet.gl import *
+from pyglet.gl import * #type: ignore
 
 from utils import shapes
 from utils.camera import FreeCamera

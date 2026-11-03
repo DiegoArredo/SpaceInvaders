@@ -4,7 +4,7 @@ import sys
 import numpy as np
 from pyglet import clock
 from pyglet.app import run
-from pyglet.gl import *
+from pyglet.gl import *  # type: ignore
 from pyglet.window import Window, key
 
 from invaders import *
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     ship_camera.pitch = 0
 
     top_camera = MyCam(np.array([0, 15, -3]))
-    top_camera.pitch = -np.pi / 2 + 0.01
+    top_camera.pitch = -np.pi / 2 + 0.01 # type: ignore
 
 
     # A continuación declare las geometrías usando la clase "Model"
