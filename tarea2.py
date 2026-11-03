@@ -110,7 +110,7 @@ if __name__ == "__main__":
     
 
     init_enemies(world, controller)
-
+    world.update()
     # ============================= NO MODIFICAR on_key_press ============================
     @controller.event
     def on_key_press(symbol, modifiers):
