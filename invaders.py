@@ -146,11 +146,12 @@ def update_ship(world, controller):
     # CONSIDERACIONES
     # - Utilice las variables booleanas controller.left y controller.right estas indican cuando se presionan las teclas
     # - Recuerde las limitantes del movimiento de la nave indicadas en el enunciado
+    
     if controller.left:
-        world["ship"]["position"][0] -= 1
+        world["ship"]["position"][0] = max(-6.0, world["ship"]["position"][0] - 0.1)
 
     if controller.right:
-        world["ship"]["position"][0] += 1
+        world["ship"]["position"][0] = min(6.0, world["ship"]["position"][0] + 0.1)
 
   
 
@@ -188,10 +189,9 @@ def update_bullets(world, controller):
 # update_camera recibe un objeto cámara, el timepo entre frames (dt) y un grafo de escena
 # Esta función se llama en cada frame y actualiza la posición de la cámara en función de la posición de la nave
 def update_camera(ship_camera, dt, world):
-    if world.camera == ship_camera:
+    if world.camera is ship_camera:
         ship_position = world["ship"]["position"]
-        ship_camera.position = ship_position
-
+        ship_camera.position = ship_position + np.array([0, 2, 2.3])
     world.camera.time_update(dt)
 
 

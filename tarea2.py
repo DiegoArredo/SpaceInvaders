@@ -62,8 +62,8 @@ if __name__ == "__main__":
     ship_camera = MyCam(np.array([0, 2.2, 12.0]))
     ship_camera.pitch = 0
 
-    top_camera = MyCam(np.array([0, 1.0, 0.0]))
-    top_camera.pitch = -1
+    top_camera = MyCam(np.array([0, 15, -3]), camera_type="orthographic")
+    top_camera.pitch = -np.pi / 2 + 0.01
 
 
     # A continuación declare las geometrías usando la clase "Model"
@@ -146,8 +146,7 @@ if __name__ == "__main__":
         update_ship(world, controller)
         update_enemies(world, controller)
         update_bullets(world, controller)
-        update_camera(world.camera, dt, world)
-
+        update_camera(ship_camera, dt, world)  
 
         world.update()
 
