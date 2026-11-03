@@ -74,10 +74,10 @@ def init_enemies(world, controller):
             texture=controller.atlas,
             pipeline=controller.pipeline
         )
-        world[f"red_enemy_{i}"]["position"] = [i*2-6, 0, -6]
+        world[f"red_enemy_{i}"]["position"] = [i*2-6, 0, -12]
         controller.enemies.append({
             "name": f"red_enemy_{i}",
-            "position": [i*2-6, 0, -6],
+            "position": [i*2-6, 0, -12],
             "alive": True
         })
         #white_enemies
@@ -88,10 +88,10 @@ def init_enemies(world, controller):
             texture=controller.atlas,
             pipeline=controller.pipeline
         )
-        world[f"white_enemy_{i}"]["position"] = [i*2-6, 0, -4]
+        world[f"white_enemy_{i}"]["position"] = [i*2-6, 0, -10]
         controller.enemies.append({
             "name": f"white_enemy_{i}",
-            "position": [i*2-6, 0, -4],
+            "position": [i*2-6, 0, -10],
             "alive": True
         })
         #green_enemies
@@ -102,10 +102,10 @@ def init_enemies(world, controller):
             texture=controller.atlas,
             pipeline=controller.pipeline
         )
-        world[f"green_enemy_{i}"]["position"] = [i*2-6, 0, -2]
+        world[f"green_enemy_{i}"]["position"] = [i*2-6, 0, -8]
         controller.enemies.append({
             "name": f"green_enemy_{i}",
-            "position": [i*2-6, 0, -2],
+            "position": [i*2-6, 0, -8],
             "alive": True
         })
         #yellow_enemies
@@ -116,10 +116,10 @@ def init_enemies(world, controller):
             texture=controller.atlas,
             pipeline=controller.pipeline
         )
-        world[f"yellow_enemy_{i}"]["position"] = [i*2-6, 0, 0]
+        world[f"yellow_enemy_{i}"]["position"] = [i*2-6, 0, -6]
         controller.enemies.append({
             "name": f"yellow_enemy_{i}",
-            "position": [i*2-6, 0, 0],
+            "position": [i*2-6, 0, -6],
             "alive": True
         })
 
@@ -202,9 +202,11 @@ def update_bullets(world, controller):
 
     for bullet in controller.bullets:
         bullet["position"]= bullet["position"] + np.array([0, 0, -0.2])
+        if bullet["position"][2] < -15:
+            bullet["alive"] = False
+            bullet["position"] = np.array([0, 0, 200])
+        #mejor método que encontré para poder eliminarla acá, asi el codígo queda más simple
         world[bullet["name"]]["position"] = bullet["position"]
-
-
 
 
 # update_camera recibe un objeto cámara, el timepo entre frames (dt) y un grafo de escena
