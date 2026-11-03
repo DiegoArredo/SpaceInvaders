@@ -1,10 +1,14 @@
 # 👾 Tarea 02: Space Invaders
 
-Proyecto para el ramo **CC3501 - Modelacion y Computacion Grafica para Ingenieres**. La tarea consiste en implementar un mini-juego inspirado en *Space Invaders* usando Python, OpenGL, shaders y un grafo de escena, sin depender de un motor de videojuegos.
+Proyecto desarrollado para el ramo **CC3501 - Modelacion y Computacion Grafica para Ingenieros**.
+
+Este repositorio contiene una aproximacion minima y simplificada a algunos elementos de *Space Invaders*. No busca recrear el juego completo, sino explorar sus componentes fundamentales, como una nave, enemigos, disparos, movimiento, colisiones e iluminacion.
+
+La implementacion fue realizada utilizando Python, OpenGL, shaders y un grafo de escena, sin depender de un motor de videojuegos.
 
 ## 🎯 Objetivo
 
-Construir una escena 3D interactiva en la que una nave pueda enfrentarse a grupos de enemigos. El proyecto busca aplicar conceptos de modelacion y computacion grafica, como:
+Aplicar conceptos de computacion grafica mediante la construccion de una escena interactiva en 3D. La tarea permite trabajar con:
 
 - manejo de una escena y sus objetos;
 - transformaciones y movimiento en el espacio;
@@ -30,9 +34,9 @@ uv run tarea2.py
 - `SPACE`: disparar una bala. 💥
 - `C`: alternar entre la camara que sigue a la nave y la camara superior. 📷
 
-## 📋 Requerimientos de la tarea
+## 📋 Elementos solicitados en la tarea
 
-La tarea consiste, principalmente, en:
+El enunciado solicita, principalmente:
 
 1. Implementar una nave 🚀 y grupos de enemigos 👾 con texturas.
 2. Incorporar movimiento, dos camaras, disparos 💥 y colisiones.
@@ -43,4 +47,4 @@ La tarea consiste, principalmente, en:
 
 Esta seccion se completara posteriormente con los resultados obtenidos y los principales aprendizajes del desarrollo.
 
-<small><em>README elaborado con la ayuda de GitHub Copilot; el modelo específico GPT Luna 5.6.</em></small>
+<small><em>README elaborado con la ayuda de GitHub Copilot.</em></small>
