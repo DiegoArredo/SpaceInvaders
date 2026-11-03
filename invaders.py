@@ -7,12 +7,12 @@ from utils import shapes
 from utils.camera import FreeCamera
 from utils.drawables import Model, Texture
 from utils.helpers import init_pipeline
-
 # ============================ COMPLETAR a continuación ============================
 
 # init_enemies recibe un grafo de escena y el controlador
 # Esta función no entrega nada pero agrega a los enemigos en
 # sus posiciones iniciales al grafo de escena y al controlador
+
 def init_enemies(world, controller):
     # CONSIDERACIONES:
     # - Recuerde que deben existir al menos dos tipos de enemigos distintos,
@@ -22,7 +22,108 @@ def init_enemies(world, controller):
     # - Puede utilizar la función vista en el auxiliar get_atlas_uv()!
     # - Se le recomienda mantener una lista de los enemigos en el controlador, para mantener sus nombres, su posicion y su estado (alive/dead)
 
-    pass
+    #uvs
+    uv_white_enemy = get_atlas_uv(xoffset=0,yoffset=1, atlas=controller.atlas)
+    uv_red_enemy = get_atlas_uv(xoffset=1,yoffset=0, atlas=controller.atlas)
+    uv_yellow_enemy = get_atlas_uv(xoffset=1,yoffset=1, atlas=controller.atlas)
+    uv_green_enemy = get_atlas_uv(xoffset=0,yoffset=0, atlas=controller.atlas)
+
+    #meshs
+    white_enemy_mesh = Model(
+            shapes.Cube["position"],
+            uv_white_enemy * 6,
+            index_data=shapes.Cube["indices"],
+            normal_data=shapes.Cube["normal"]
+        )
+    
+    red_enemy_mesh = Model(
+            shapes.Cube["position"],
+            uv_red_enemy * 6,
+            index_data=shapes.Cube["indices"],
+            normal_data=shapes.Cube["normal"]
+        )
+    
+    yellow_enemy_mesh = Model(
+            shapes.Cube["position"],
+            uv_yellow_enemy * 6,
+            index_data=shapes.Cube["indices"],
+            normal_data=shapes.Cube["normal"]
+        )
+    
+    green_enemy_mesh = Model(
+            shapes.Cube["position"],
+            uv_green_enemy * 6,
+            index_data=shapes.Cube["indices"],
+            normal_data=shapes.Cube["normal"]
+        )
+
+    #agregar enemigos como un nodo a world
+    world.add_node(
+        "enemies",
+        mesh=None,
+        texture=None,
+        pipeline=None
+    )
+
+    for i in range(7):
+        #red_enemies
+        world.add_node(
+            attach_to="enemies",    
+            name=f"red_enemy_{i}",
+            mesh=red_enemy_mesh,
+            texture=controller.atlas,
+            pipeline=controller.pipeline
+        )
+        world[f"red_enemy_{i}"]["position"] = [i*2-6, 0, -6]
+        controller.enemies.append({
+            "name": f"red_enemy_{i}",
+            "position": [i*2-6, 0, -6],
+            "alive": True
+        })
+        #white_enemies
+        world.add_node(
+            attach_to="enemies",
+            name=f"white_enemy_{i}",
+            mesh=white_enemy_mesh,
+            texture=controller.atlas,
+            pipeline=controller.pipeline
+        )
+        world[f"white_enemy_{i}"]["position"] = [i*2-6, 0, -4]
+        controller.enemies.append({
+            "name": f"white_enemy_{i}",
+            "position": [i*2-6, 0, -4],
+            "alive": True
+        })
+        #green_enemies
+        world.add_node(
+            attach_to="enemies",
+            name=f"green_enemy_{i}",
+            mesh=green_enemy_mesh,
+            texture=controller.atlas,
+            pipeline=controller.pipeline
+        )
+        world[f"green_enemy_{i}"]["position"] = [i*2-6, 0, -2]
+        controller.enemies.append({
+            "name": f"green_enemy_{i}",
+            "position": [i*2-6, 0, -2],
+            "alive": True
+        })
+        #yellow_enemies
+        world.add_node(
+            attach_to="enemies",
+            name=f"yellow_enemy_{i}",
+            mesh=yellow_enemy_mesh,
+            texture=controller.atlas,
+            pipeline=controller.pipeline
+        )
+        world[f"yellow_enemy_{i}"]["position"] = [i*2-6, 0, 0]
+        controller.enemies.append({
+            "name": f"yellow_enemy_{i}",
+            "position": [i*2-6, 0, 0],
+            "alive": True
+        })
+
+    
 
 
 
@@ -46,10 +147,12 @@ def update_ship(world, controller):
     # - Utilice las variables booleanas controller.left y controller.right estas indican cuando se presionan las teclas
     # - Recuerde las limitantes del movimiento de la nave indicadas en el enunciado
     if controller.left:
-        pass
+        world["ship"]["position"][0] -= 1
 
     if controller.right:
-        pass
+        world["ship"]["position"][0] += 1
+
+  
 
 
 
@@ -85,8 +188,9 @@ def update_bullets(world, controller):
 # update_camera recibe un objeto cámara, el timepo entre frames (dt) y un grafo de escena
 # Esta función se llama en cada frame y actualiza la posición de la cámara en función de la posición de la nave
 def update_camera(ship_camera, dt, world):
-
-    # completar...
+    if world.camera == ship_camera:
+        ship_position = world["ship"]["position"]
+        ship_camera.position = ship_position
 
     world.camera.time_update(dt)
 

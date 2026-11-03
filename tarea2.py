@@ -59,30 +59,33 @@ if __name__ == "__main__":
     # ============================ COMPLETAR DESDE AQUÍ ============================
 
     # Se definen dos cámaras inicialmente iguales
-    ship_camera = MyCam(np.array([0, 2, 12.0]))
+    ship_camera = MyCam(np.array([0, 2.2, 12.0]))
     ship_camera.pitch = 0
 
-    top_camera = MyCam(np.array([0, 2, 12.0]))
-    top_camera.pitch = 0
+    top_camera = MyCam(np.array([0, 1.0, 0.0]))
+    top_camera.pitch = -1
 
 
     # A continuación declare las geometrías usando la clase "Model"
     # Necesitará una geometría para la nave y una para las balas
+    uv_ship = get_atlas_uv(xoffset=2,yoffset=1, atlas=controller.atlas)
     ship_mesh = Model(
         shapes.Cube["position"],
-        shapes.Cube["uv"],
+        uv_ship * 6,
         index_data=shapes.Cube["indices"],
         normal_data=shapes.Cube["normal"]
     )
 
     # Ojo con esta geometría pues se utiliza por la función "shoot"
+    uv_bullet = get_atlas_uv(xoffset=2,yoffset=0, atlas=controller.atlas)
     bullet_mesh = Model(
         shapes.Cube["position"],
-        shapes.Cube["uv"],
+        uv_bullet * 6,
         index_data=shapes.Cube["indices"],
         normal_data=shapes.Cube["normal"]
     )
 
+    
     # El grafo de escena a usar, con su cámara por defecto
     world = SceneGraph(ship_camera)
 
@@ -97,6 +100,7 @@ if __name__ == "__main__":
 
     world["ship"]["position"] = [0.0, 0.5, 10.0]
     world["ship"]["scale"] = [1.0, 0.5, 1.0]
+    
 
     init_enemies(world, controller)
 
@@ -137,8 +141,13 @@ if __name__ == "__main__":
     def update(dt):
 
         controller.time += dt
-
+        
         # Debe utilizar las funciones auxiliares de update aquí
+        update_ship(world, controller)
+        update_enemies(world, controller)
+        update_bullets(world, controller)
+        update_camera(world.camera, dt, world)
+
 
         world.update()
 
