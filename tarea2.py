@@ -62,7 +62,7 @@ if __name__ == "__main__":
     ship_camera = MyCam(np.array([0, 2.2, 12.0]))
     ship_camera.pitch = 0
 
-    top_camera = MyCam(np.array([0, 15, -3]), camera_type="orthographic")
+    top_camera = MyCam(np.array([0, 15, -3]))
     top_camera.pitch = -np.pi / 2 + 0.01
 
 
@@ -89,12 +89,19 @@ if __name__ == "__main__":
     # El grafo de escena a usar, con su cámara por defecto
     world = SceneGraph(ship_camera)
 
-    # Se agrega el nodo de la nave
+    # Se agrega el nodo de la nave y nodo padre de las balas
     # luego utilice la función auxiliar "init_enemies" para los enemigos
     world.add_node(
         "ship",
         mesh=ship_mesh,
         texture=controller.atlas,
+        pipeline=controller.pipeline
+    )
+
+    world.add_node(
+        "bullets",
+        mesh=None,
+        texture=None,
         pipeline=controller.pipeline
     )
 
