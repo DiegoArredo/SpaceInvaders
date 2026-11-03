@@ -46,6 +46,11 @@ class Controller(Window):
         # Variable de dirección puede serle útil
         self.direction = 1
 
+        #variable para pausa
+        self.paused = False
+
+        #variable para el dt
+        self.dt = 0
 
 if __name__ == "__main__":
 
@@ -114,13 +119,18 @@ if __name__ == "__main__":
     # ============================= NO MODIFICAR on_key_press ============================
     @controller.event
     def on_key_press(symbol, modifiers):
+
+        #Key presses para pausar "p"
+        if symbol == key.P:
+            controller.paused = not controller.paused
+
         if symbol == key.A or symbol == key.LEFT:
             controller.left = True
 
         if symbol == key.D or symbol == key.RIGHT:
             controller.right = True
 
-        if symbol == key.SPACE:
+        if symbol == key.SPACE and not controller.paused:
             shoot(world["ship"]["position"], world, bullet_mesh, controller)
 
         if symbol == key.C:
@@ -146,8 +156,11 @@ if __name__ == "__main__":
 
     # ============================ COMPLETAR update() ============================
     def update(dt):
+        if controller.paused:
+            return
 
         controller.time += dt
+        controller.dt = dt
         
         # Debe utilizar las funciones auxiliares de update aquí
         update_ship(world, controller)
