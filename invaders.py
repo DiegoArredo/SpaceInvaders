@@ -27,7 +27,7 @@ def init_enemies(world, controller):
     uv_red_enemy = get_atlas_uv(xoffset=1,yoffset=0, atlas=controller.atlas)
     uv_yellow_enemy = get_atlas_uv(xoffset=1,yoffset=1, atlas=controller.atlas)
     uv_green_enemy = get_atlas_uv(xoffset=0,yoffset=0, atlas=controller.atlas)
-
+    
     #meshs
     white_enemy_mesh = Model(
             shapes.Cube["position"],
@@ -62,7 +62,7 @@ def init_enemies(world, controller):
         "enemies",
         mesh=None,
         texture=None,
-        pipeline=None
+        pipeline=controller.pipeline
     )
 
     for i in range(7):
@@ -134,8 +134,27 @@ def init_enemies(world, controller):
 def shoot(ship_position, world, bullet_mesh, controller):
     # CONSIDERACIONES
     # - Se le recomienda mantener una lista "bullets" en el controlador con las balas para mantener los nombres de las balas, su posicion y su estado (alive/dead)
+    
+    #Visual
+    world.add_node(
+        attach_to="bullets",
+        name=f"bullet_{controller.bullet_counter}",
+        mesh=bullet_mesh,
+        texture=controller.atlas,
+        pipeline=controller.pipeline
+    )
+    world[f"bullet_{controller.bullet_counter}"]["position"] = ship_position
+    world[f"bullet_{controller.bullet_counter}"]["scale"] = [0.25, 0.25, 0.5]
 
-    pass
+    #Controller
+    controller.bullets.append({
+        "name": f"bullet_{controller.bullet_counter}",
+        "position": ship_position,
+        "alive": True
+    })
+
+    controller.bullet_counter += 1
+    
 
 
 
@@ -148,10 +167,10 @@ def update_ship(world, controller):
     # - Recuerde las limitantes del movimiento de la nave indicadas en el enunciado
     
     if controller.left:
-        world["ship"]["position"][0] = max(-6.0, world["ship"]["position"][0] - 0.1)
+        world["ship"]["position"][0] = np.clip(world["ship"]["position"][0] - 0.1, -6.0, 6.0)
 
     if controller.right:
-        world["ship"]["position"][0] = min(6.0, world["ship"]["position"][0] + 0.1)
+        world["ship"]["position"][0] = np.clip(world["ship"]["position"][0] + 0.1, -6.0, 6.0)
 
   
 
@@ -181,7 +200,9 @@ def update_bullets(world, controller):
     # - Puede utilizar la función dada "check_collision" que recibe una bala y un enemigo (revise el formato en que recibe)
     # - Encuentre una forma de "eliminar" las balas y enemigos muertos, hay varias formas...
 
-    pass
+    for bullet in controller.bullets:
+        bullet["position"]= bullet["position"] + np.array([0, 0, -0.2])
+        world[bullet["name"]]["position"] = bullet["position"]
 
 
 
