@@ -185,7 +185,21 @@ def update_enemies(world, controller):
     # - Se le recomienda actualizar primero la lista en el controlador y luego copiar eso al grafo de escena!
     # - Se deberá imitar el movimiento indicado en el enunciado
 
-    pass
+    cambio_direccion = False
+    for enemy in controller.enemies:
+        if enemy["alive"]:
+            enemy["position"] = world.find_position(enemy["name"])
+            if enemy["position"][0] > 10.0 or enemy["position"][0] < -10.0:
+                cambio_direccion = True
+        else:
+            world[enemy["name"]]["scale"] = np.array([0, 0, 0])
+    if cambio_direccion:
+        controller.direction *= -1
+        world["enemies"]["position"][2] += 0.5
+
+    world["enemies"]["position"][0] += controller.direction * 0.01
+
+            
 
 
 
@@ -200,12 +214,24 @@ def update_bullets(world, controller):
     # - Puede utilizar la función dada "check_collision" que recibe una bala y un enemigo (revise el formato en que recibe)
     # - Encuentre una forma de "eliminar" las balas y enemigos muertos, hay varias formas...
 
+    
     for bullet in controller.bullets:
-        bullet["position"]= bullet["position"] + np.array([0, 0, -0.2])
-        if bullet["position"][2] < -15:
-            bullet["alive"] = False
-            bullet["position"] = np.array([0, 0, 200])
-        #mejor método que encontré para poder eliminarla acá, asi el codígo queda más simple
+        if bullet["alive"]:
+
+            bullet["position"]= bullet["position"] + np.array([0, 0, -0.2])
+            if bullet["position"][2] < -15:
+                bullet["alive"] = False
+                bullet["position"] = np.array([0, 0, 200])
+            
+            for enemy in controller.enemies:
+                if enemy["alive"]:
+                    if check_collision(bullet, enemy):
+                        bullet["alive"] = False
+                        bullet["position"] = np.array([0, 0, 200])
+                        enemy["alive"] = False
+                        #se actualiza la vista en update_enemy, ahi se verefica si está alive
+                       #usando el controller (lo tenía aca pero es mas ordenado tenerlo en update_enemy)
+
         world[bullet["name"]]["position"] = bullet["position"]
 
 
