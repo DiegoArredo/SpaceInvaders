@@ -52,6 +52,9 @@ class Controller(Window):
         #variable para el dt
         self.dt = 0
 
+        # variable para el toggle de la luz
+        self.light = True
+
 if __name__ == "__main__":
 
     controller = Controller( 800, 600, "Space Invaders" )
@@ -124,6 +127,10 @@ if __name__ == "__main__":
         if symbol == key.P:
             controller.paused = not controller.paused
 
+        #Key presses para toggle de luz "f"
+        if symbol == key.F:
+            controller.light = not controller.light
+
         if symbol == key.A or symbol == key.LEFT:
             controller.left = True
 
@@ -167,6 +174,11 @@ if __name__ == "__main__":
         update_enemies(world, controller)
         update_bullets(world, controller)
         update_camera(ship_camera, dt, world)  
+
+        #posicion nave para el fragment shader
+        controller.pipeline["u_shipPos"] = world["ship"]["position"]
+        #toggle de luz para el fragment shader
+        controller.pipeline["u_toggleLight"] = controller.light
 
         world.update()
 
